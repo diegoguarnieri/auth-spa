@@ -157,7 +157,7 @@ return [
 
     //'domain' => env('SESSION_DOMAIN', null),
 
-    'domain' => 'localhost:8080',
+    'domain' => '.guarnieri.ca',
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +199,7 @@ return [
     |
     */
 
-    //'same_site' => 'lax',
-    'same_site' => 'none',
+    'same_site' => 'lax',
+    //'same_site' => 'none',
 
 ];

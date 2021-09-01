@@ -2,22 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller {
-    
-    public function login(Request $request) {
-        $sessionKey = md5(uniqid());
-        $request->session()->put('session_key', $sessionKey);
 
-        $response = array('login - sessionKey' => $sessionKey);
-        return response()->json($response, 200);
+    public function login(Request $request) {
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if(Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return response()->json(['user' => Auth::user()]);
+        }
     }
 
     public function test(Request $request) {
-        $sessionKey = $request->session()->get('session_key');
+        Log::info('LoginController->test',[json_encode($request->all())]);
 
-        $response = array('test - sessionKey' => $sessionKey);
+        $sessionKey = $request->session()->get('session_key');
+        
+        if(is_null($sessionKey)) {
+            $sessionKey = md5(uniqid());
+            $request->session()->put('session_key', $sessionKey);
+        }
+
+        $response = ['sessionKey' => $sessionKey];
         return response()->json($response, 200);
     }
 

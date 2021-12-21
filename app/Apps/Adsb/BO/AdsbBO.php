@@ -84,7 +84,7 @@ class AdsbBO {
         ->first();
 
         if($flight) {
-            if(!is_null($fields['callsign'])      && !empty($fields['latitude']) && is_null($flight->callsign)) $flight->callsign = $fields['callsign'];
+            if(!is_null($fields['callsign'])      && !empty($fields['callsign']) && is_null($flight->callsign)) $flight->callsign = $fields['callsign'];
             if(!is_null($fields['latitude'])      && !empty($fields['latitude']))      $flight->latitude = $fields['latitude'];
             if(!is_null($fields['longitude'])     && !empty($fields['longitude']))     $flight->longitude = $fields['longitude'];
             if(!is_null($fields['track'])         && !empty($fields['track']))         $flight->track = $fields['track'];
@@ -111,7 +111,7 @@ class AdsbBO {
         $track = new Track();
         $track->flight_id = $flight->id;
         $track->icao = $fields['icao'];
-        $track->callsign = $fields['callsign'];
+        $track->callsign       = is_null($fields['callsign'])      || empty($fields['callsign'])      ? null : $fields['callsign'];
         $track->latitude       = is_null($fields['latitude'])      || empty($fields['latitude'])      ? null : $fields['latitude'];
         $track->longitude      = is_null($fields['longitude'])     || empty($fields['longitude'])     ? null : $fields['longitude'];
         $track->track          = is_null($fields['track'])         || empty($fields['track'])         ? null : $fields['track'];

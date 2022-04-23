@@ -11,7 +11,14 @@ class NoAuth {
         $sessionKey = substr(sha1(uniqid()),0,8);
         session(['session_key' => $sessionKey]);
 
-        Log::info($sessionKey . ' NoAuth->handle', [$request->ip(), $request->header('CF-IPCountry'), $request->method(), $request->path(), json_encode($request->all())]);
+        Log::info('NoAuth->handle', [
+            'session_key' => $sessionKey,
+            'source_ip' => $request->ip(),
+            'source_country' => $request->header('CF-IPCountry'),
+            'http_method' => $request->method(),
+            'path' => $request->path(),
+            'fields' => json_encode($request->all())
+        ]);
 
         return $next($request);
     }

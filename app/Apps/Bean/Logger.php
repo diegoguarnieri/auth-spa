@@ -11,19 +11,26 @@ class Logger implements ILogger {
     }
 
     public function info($message, $fields = []) {
-        Log::info($this->getSessionKey() . ' ' . $message, $fields);
+        Log::info($message, $this->getParameters($fields));
     }
 
     public function error($message, $fields = []) {
-        Log::error($this->getSessionKey() . ' ' . $message, $fields);
+        Log::error($message, $this->getParameters($fields));
     }
 
     public function debug($message, $fields = []) {
-        Log::debug($this->getSessionKey() . ' ' . $message, $fields);
+        Log::debug($message, $this->getParameters($fields));
     }
 
     public function warning($message, $fields = []) {
-        Log::warning($this->getSessionKey() . ' ' . $message, $fields);
+        Log::warning($message, $this->getParameters($fields));
+    }
+
+    public function getParameters($fields) {
+        return [
+            'session_key' => $this->getSessionKey(),
+            'data' => $fields
+        ];
     }
 
     private function getSessionKey() {

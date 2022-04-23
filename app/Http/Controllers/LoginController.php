@@ -19,7 +19,6 @@ class LoginController extends Controller {
 
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            //return response()->json(['user' => Auth::user()]);
 
             $response = ['status' => 'success', 'message' => ''];
             return response()->json($response, 200);
@@ -27,16 +26,8 @@ class LoginController extends Controller {
     }
 
     public function logout(Request $request) {
-        // Revoke the token that was used to authenticate the current request...
-        //$request->user()->currentAccessToken()->delete();
-        // Revoke a specific token...
-        //$user->tokens()->where('id', $tokenId)->delete();
-
-        //Auth::user()->tokens()->delete();
-        //Auth::logout();
-
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->regenerate();
 
         $response = ['status' => 'success', 'message' => ''];
         return response()->json($response, 200);
@@ -53,8 +44,11 @@ class LoginController extends Controller {
         }
 
         $response = [
+            'status' => 'success',
+            'message' => '',
             'sessionKey' => $sessionKey,
-            'uuid' => uniqid() . ' ' . (new DateTime())->format('Y-m-d H:i:s')
+            'uuid' => uniqid(),
+            'timestamp' => (new DateTime())->format('Y-m-d H:i:s')
         ];
         return response()->json($response, 200);
     }

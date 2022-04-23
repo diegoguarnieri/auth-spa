@@ -6,19 +6,24 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdsbController;
 use App\Http\Controllers\TestController;
 
-Route::post('login', [LoginController::class, 'login']);
-
-Route::group(['middleware' => 'auth:sanctum'], function() {
-    Route::get('logout', [LoginController::class, 'logout']);
-
-    Route::get('session-key', [LoginController::class, 'sessionKey']);
-
-});
-
+/**
+ * No Auth
+ */
 Route::group(['middleware' => 'no.auth'], function() {
+    Route::post('login', [LoginController::class, 'login']);
 
     Route::post('adsb', [AdsbController::class, 'store']);
     Route::post('tracks', [AdsbController::class, 'tracks']);
 
     Route::get('lead', [TestController::class, 'lead']);
+    Route::post('power-meter', [TestController::class, 'powerMeter']);
+});
+
+/**
+ * Sanctum
+ */
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::get('logout', [LoginController::class, 'logout']);
+
+    Route::get('session-key', [LoginController::class, 'sessionKey']);
 });
